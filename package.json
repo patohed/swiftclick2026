@@ -1,0 +1,17 @@
+{
+  "name": "swiftclick-landing",
+  "version": "1.0.0",
+  "description": "Swift Click Marketing Digital - Landing Page",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "preview": "python -m http.server 8000"
+  },
+  "keywords": [
+    "marketing",
+    "digital",
+    "landing-page"
+  ],
+  "author": "Swift Click",
+  "license": "MIT"
+}
