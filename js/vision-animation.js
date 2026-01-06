@@ -3,6 +3,13 @@
     const canvas = document.getElementById('vision-canvas');
     if (!canvas) return;
     
+    // Desactivar animaciones en dispositivos móviles para mejor rendimiento
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobileDevice) {
+        canvas.style.display = 'none';
+        return;
+    }
+    
     const ctx = canvas.getContext('2d');
     
     // Colores SwiftClick
@@ -118,7 +125,8 @@
     
     // Crear estrellas
     const stars = [];
-    const numStars = 150;
+    const isMobile = window.innerWidth < 768;
+    const numStars = isMobile ? 80 : 150;
     
     for (let i = 0; i < numStars; i++) {
         stars.push(new WaveStar());

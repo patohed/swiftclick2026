@@ -3,6 +3,13 @@
     const canvas = document.getElementById('contacto-canvas');
     if (!canvas) return;
     
+    // Desactivar animaciones en dispositivos móviles para mejor rendimiento
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobileDevice) {
+        canvas.style.display = 'none';
+        return;
+    }
+    
     const ctx = canvas.getContext('2d');
     
     // Colores SwiftClick
@@ -107,7 +114,8 @@
     
     // Crear partículas
     const particles = [];
-    const numParticles = 100;
+    const isMobile = window.innerWidth < 768;
+    const numParticles = isMobile ? 50 : 100;
     
     for (let i = 0; i < numParticles; i++) {
         particles.push(new EnergyParticle());

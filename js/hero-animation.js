@@ -3,13 +3,21 @@
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
     
+    // Desactivar animaciones en dispositivos móviles para mejor rendimiento
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobileDevice) {
+        canvas.style.display = 'none';
+        return;
+    }
+    
     const ctx = canvas.getContext('2d');
     
     // Configuración adaptada a SwiftClick
+    const isMobile = window.innerWidth < 768;
     const config = {
         speed: 2.5,
-        numStars: 400,
-        numParticles: 15
+        numStars: isMobile ? 200 : 400,
+        numParticles: isMobile ? 8 : 15
     };
     
     // Colores del diseño SwiftClick

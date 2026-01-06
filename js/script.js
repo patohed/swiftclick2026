@@ -95,30 +95,39 @@ if (contactForm) {
         
         // Get form data
         const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData);
         
         // Disable submit button
         const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Enviando...';
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>Enviando...</span>';
         submitBtn.disabled = true;
         
         try {
-            // Simulate API call (replace with your actual endpoint)
-            await simulateFormSubmission(data);
+            // Send to Formspree
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             
-            // Show success message
-            showMessage('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.', 'success');
-            
-            // Reset form
-            contactForm.reset();
+            if (response.ok) {
+                // Show success message
+                showMessage('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.', 'success');
+                
+                // Reset form
+                contactForm.reset();
+            } else {
+                throw new Error('Error en el envío');
+            }
             
         } catch (error) {
             // Show error message
             showMessage('Error al enviar el mensaje. Por favor, intenta nuevamente.', 'error');
         } finally {
             // Re-enable submit button
-            submitBtn.textContent = originalText;
+            submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
     });
@@ -136,14 +145,6 @@ function showMessage(message, type) {
             formMessage.style.display = 'none';
         }, 5000);
     }
-}
-
-// Simulate form submission (replace with actual API call)
-function simulateFormSubmission(data) {
-    return new Promise((resolve) => {
-        console.log('Form data:', data);
-        setTimeout(resolve, 1500); // Simulate network delay
-    });
 }
 
 // ===== SCROLL ANIMATIONS =====
