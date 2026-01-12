@@ -7,6 +7,9 @@
     "dev": "python -m http.server 8000",
     "preview": "python -m http.server 8000"
   },
+  "dependencies": {
+    "resend": "^3.2.0"
+  },
   "keywords": [
     "marketing",
     "digital",

@@ -301,7 +301,7 @@
             </p>
             
             <div style="max-width: 700px; margin: 0 auto;">
-                <form id="contactForm" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <form id="contactForm" class="contact-form">
                     <div class="form-group">
                         <input 
                             type="text" 
@@ -351,7 +351,7 @@
                         ></textarea>
                     </div>
                     
-                    <button type="submit" class="btn-submit">
+                    <button type="submit" class="btn-submit" id="submitBtn">
                         <span>Enviar Mensaje</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -457,5 +457,70 @@
     <script src="js/vision-animation.js"></script>
     <script src="js/contacto-animation.js"></script>
     <script src="js/script.js"></script>
+    
+    <!-- Contact Form Handler -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Deshabilitar botón y mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Enviando...</span>';
+            submitBtn.style.opacity = '0.7';
+            
+            // Obtener datos del formulario
+            const formData = {
+                nombre: e.target.nombre.value,
+                email: e.target.email.value,
+                telefono: e.target.telefono.value,
+                empresa: e.target.empresa.value,
+                mensaje: e.target.mensaje.value
+            };
+            
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Éxito
+                    formMessage.style.display = 'block';
+                    formMessage.style.color = '#4ade80';
+                    formMessage.innerHTML = '✅ ¡Mensaje enviado con éxito! Te contactaremos pronto.';
+                    e.target.reset();
+                } else {
+                    // Error del servidor
+                    formMessage.style.display = 'block';
+                    formMessage.style.color = '#f87171';
+                    formMessage.innerHTML = '❌ Hubo un error al enviar el mensaje. Por favor, intenta nuevamente.';
+                }
+            } catch (error) {
+                // Error de red
+                formMessage.style.display = 'block';
+                formMessage.style.color = '#f87171';
+                formMessage.innerHTML = '❌ Error de conexión. Por favor, verifica tu internet e intenta nuevamente.';
+            } finally {
+                // Restaurar botón
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.style.opacity = '1';
+                
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 </html>

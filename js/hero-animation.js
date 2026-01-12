@@ -60,9 +60,9 @@
         draw() {
             const x = (this.x / this.z) * canvas.width + canvas.width / 2;
             const y = (this.y / this.z) * canvas.height + canvas.height / 2;
-            const size = (1 - this.z / canvas.width) * this.size * 2;
+            const size = Math.max(0, (1 - this.z / canvas.width) * this.size * 2);
             
-            if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) {
+            if (x < 0 || x > canvas.width || y < 0 || y > canvas.height || size <= 0) {
                 this.reset();
                 return;
             }
@@ -117,9 +117,9 @@
         draw() {
             const x = (this.x / this.z) * canvas.width + canvas.width / 2;
             const y = (this.y / this.z) * canvas.height + canvas.height / 2;
-            const size = (1 - this.z / canvas.width) * this.baseSize;
+            const size = Math.max(0, (1 - this.z / canvas.width) * this.baseSize);
             
-            if (x < -50 || x > canvas.width + 50 || y < -50 || y > canvas.height + 50) {
+            if (x < -50 || x > canvas.width + 50 || y < -50 || y > canvas.height + 50 || size <= 0) {
                 return;
             }
             
