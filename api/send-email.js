@@ -20,9 +20,23 @@ export default async function handler(req, res) {
 
     // Enviar email con Resend
     const data = await resend.emails.send({
-      from: 'SwiftClick <onboarding@resend.dev>', // Cambiar cuando tengas dominio verificado
+      from: 'SwiftClick Contacto <onboarding@resend.dev>',
       to: ['contacto@swiftclick.com.ar'],
-      subject: `Nuevo contacto: ${empresa} - ${nombre}`,
+      replyTo: email,
+      subject: `[SwiftClick] Nuevo contacto: ${empresa} - ${nombre}`,
+      text: `
+Nuevo contacto desde SwiftClick
+
+Nombre: ${nombre}
+Email: ${email}
+${telefono ? `Teléfono: ${telefono}` : ''}
+Empresa: ${empresa}
+
+Mensaje:
+${mensaje}
+
+Fecha: ${new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}
+      `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
           <div style="background: linear-gradient(135deg, #6a5acd 0%, #4a3fa8 100%); padding: 30px; border-radius: 10px 10px 0 0;">
