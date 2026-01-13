@@ -467,10 +467,14 @@
             const formMessage = document.getElementById('formMessage');
             const originalBtnText = submitBtn.innerHTML;
             
+            // Ocultar mensaje anterior si existe
+            formMessage.style.display = 'none';
+            
             // Deshabilitar botón y mostrar loading
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>Enviando...</span>';
             submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'wait';
             
             // Obtener datos del formulario
             const formData = {
@@ -493,32 +497,50 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    // Éxito
+                    // Éxito - Mostrar mensaje de éxito
                     formMessage.style.display = 'block';
+                    formMessage.style.padding = '1rem';
+                    formMessage.style.borderRadius = '8px';
+                    formMessage.style.backgroundColor = 'rgba(74, 222, 128, 0.1)';
+                    formMessage.style.border = '1px solid #4ade80';
                     formMessage.style.color = '#4ade80';
+                    formMessage.style.fontWeight = '500';
                     formMessage.innerHTML = '✅ ¡Mensaje enviado con éxito! Te contactaremos pronto.';
+                    
+                    // Limpiar formulario
                     e.target.reset();
+                    
+                    // Ocultar mensaje después de 8 segundos
+                    setTimeout(() => {
+                        formMessage.style.display = 'none';
+                    }, 8000);
                 } else {
                     // Error del servidor
-                    formMessage.style.display = 'block';
-                    formMessage.style.color = '#f87171';
-                    formMessage.innerHTML = '❌ Hubo un error al enviar el mensaje. Por favor, intenta nuevamente.';
+                    throw new Error(data.error || 'Error al enviar el mensaje');
                 }
+                
             } catch (error) {
-                // Error de red
+                // Error de red o del servidor
                 formMessage.style.display = 'block';
+                formMessage.style.padding = '1rem';
+                formMessage.style.borderRadius = '8px';
+                formMessage.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
+                formMessage.style.border = '1px solid #f87171';
                 formMessage.style.color = '#f87171';
-                formMessage.innerHTML = '❌ Error de conexión. Por favor, verifica tu internet e intenta nuevamente.';
+                formMessage.style.fontWeight = '500';
+                formMessage.innerHTML = '❌ Error al enviar el mensaje. Por favor, intenta nuevamente o contáctanos directamente.';
+                
+                // Ocultar mensaje después de 8 segundos
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 8000);
+                
             } finally {
-                // Restaurar botón
+                // Restaurar botón siempre
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.style.opacity = '1';
-                
-                // Ocultar mensaje después de 5 segundos
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
+                submitBtn.style.cursor = 'pointer';
             }
         });
     </script>
