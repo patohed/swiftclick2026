@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
     // Enviar email con Resend
     const data = await resend.emails.send({
-      from: 'SwiftClick Contacto <onboarding@resend.dev>',
+      from: 'SwiftClick <noreply@swiftclick.com.ar>',
       to: ['contacto@swiftclick.com.ar'],
       replyTo: email,
       subject: `[SwiftClick] Nuevo contacto: ${empresa} - ${nombre}`,
