@@ -95,6 +95,13 @@ if (contactForm) {
         
         // Get form data
         const formData = new FormData(contactForm);
+        const data = {
+            nombre: formData.get('nombre'),
+            email: formData.get('email'),
+            telefono: formData.get('telefono') || '',
+            empresa: formData.get('empresa'),
+            mensaje: formData.get('mensaje')
+        };
         
         // Disable submit button
         const submitBtn = contactForm.querySelector('button[type="submit"]');
@@ -103,26 +110,29 @@ if (contactForm) {
         submitBtn.disabled = true;
         
         try {
-            // Send to Formspree
-            const response = await fetch(contactForm.action, {
+            // Send to Resend API
+            const response = await fetch('/api/send-email', {
                 method: 'POST',
-                body: formData,
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
             
-            if (response.ok) {
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
                 // Show success message
                 showMessage('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.', 'success');
                 
                 // Reset form
                 contactForm.reset();
             } else {
-                throw new Error('Error en el envío');
+                throw new Error(result.error || 'Error en el envío');
             }
             
         } catch (error) {
+            console.error('Error:', error);
             // Show error message
             showMessage('Error al enviar el mensaje. Por favor, intenta nuevamente.', 'error');
         } finally {
