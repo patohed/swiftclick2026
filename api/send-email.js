@@ -44,13 +44,13 @@ export default async function handler(req, res) {
       });
     }
 
-    console.log('📧 Enviando email a contacto@swiftclick.com.ar...');
+    console.log('📧 Enviando email a info@swiftclick.com.ar...');
     
     // Enviar email con Resend
     const data = await resend.emails.send({
-      from: 'SwiftClick <contacto@swiftclick.com.ar>',
-      to: ['contacto@swiftclick.com.ar'],
-      replyTo: email,
+      from: 'SwiftClick <no-reply@swiftclick.com.ar>',
+      to: ['info@swiftclick.com.ar'],
+      reply_to: email,
       subject: `[SwiftClick] Nuevo contacto: ${empresa} - ${nombre}`,
       text: `
 Nuevo contacto desde SwiftClick
