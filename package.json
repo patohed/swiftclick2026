@@ -1,6 +1,7 @@
 {
   "name": "swiftclick-landing",
   "version": "1.0.0",
+  "type": "module",
   "description": "Swift Click Marketing Digital - Landing Page",
   "main": "index.html",
   "scripts": {
@@ -8,6 +9,7 @@
     "preview": "python -m http.server 8000"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "resend": "^3.2.0"
   },
   "keywords": [

@@ -10,7 +10,7 @@ async function testResend() {
   
   try {
     const data = await resend.emails.send({
-      from: 'SwiftClick <noreply@swiftclick.com.ar>',
+      from: 'SwiftClick <contacto@swiftclick.com.ar>',
       to: ['contacto@swiftclick.com.ar'],
       replyTo: 'test@ejemplo.com',
       subject: '[SwiftClick] Test de formulario de contacto',
@@ -30,7 +30,7 @@ async function testResend() {
     });
 
     console.log('✅ Email enviado exitosamente!');
-    console.log('📧 ID:', data.id);
+    console.log('📧 ID:', data.data?.id || data.id);
     console.log('📊 Data completa:', JSON.stringify(data, null, 2));
     
   } catch (error) {

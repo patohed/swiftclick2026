@@ -3,12 +3,30 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
+  // Configurar CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Manejar preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Solo permitir POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
   try {
+    // Verificar que existe la API key
+    if (!process.env.RESEND_API_KEY) {
+      console.error('❌ RESEND_API_KEY no está configurada');
+      return res.status(500).json({ 
+        error: 'Error de configuración del servidor' 
+      });
+    }
+
     const { nombre, email, telefono, empresa, mensaje } = req.body;
 
     // Validación básica
@@ -18,9 +36,19 @@ export default async function handler(req, res) {
       });
     }
 
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        error: 'Email inválido' 
+      });
+    }
+
+    console.log('📧 Enviando email a contacto@swiftclick.com.ar...');
+    
     // Enviar email con Resend
     const data = await resend.emails.send({
-      from: 'SwiftClick <noreply@swiftclick.com.ar>',
+      from: 'SwiftClick <contacto@swiftclick.com.ar>',
       to: ['contacto@swiftclick.com.ar'],
       replyTo: email,
       subject: `[SwiftClick] Nuevo contacto: ${empresa} - ${nombre}`,
@@ -86,14 +114,20 @@ Fecha: ${new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Bueno
     return res.status(200).json({ 
       success: true, 
       message: 'Email enviado correctamente',
-      id: data.id 
+      id: data.data?.id || data.id 
     });
 
   } catch (error) {
-    console.error('Error enviando email:', error);
+    console.error('❌ Error enviando email:', error);
+    console.error('Detalles del error:', {
+      name: error.name,
+      message: error.message,
+      statusCode: error.statusCode
+    });
+    
     return res.status(500).json({ 
       error: 'Error al enviar el email',
-      details: error.message 
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Error interno del servidor'
     });
   }
 }
