@@ -10,8 +10,8 @@ async function testResend() {
   
   try {
     const data = await resend.emails.send({
-      from: 'SwiftClick <contacto@swiftclick.com.ar>',
-      to: ['contacto@swiftclick.com.ar'],
+      from: 'SwiftClick <no-reply@swiftclick.com.ar>',
+      to: ['info@swiftclick.com.ar'],
       replyTo: 'test@ejemplo.com',
       subject: '[SwiftClick] Test de formulario de contacto',
       text: 'Este es un email de prueba enviado directamente desde Node.js para verificar Resend',
