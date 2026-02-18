@@ -1,12 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WC37MP35');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description" content="SwiftClick - Google Partner Argentina. Partner integral de inversión digital. Certificación oficial Google, infraestructura robusta y performance real.">
     <meta name="keywords" content="google partner argentina, marketing digital, google ads, performance marketing, inversión digital">
     <meta name="theme-color" content="#6a5acd">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SwiftClick">
     <title>SwiftClick | Google Partner Argentina - Inversión Digital</title>
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://swiftclick.com.ar/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swiftclick.com.ar/">
+    <meta property="og:title" content="SwiftClick | Google Partner Argentina - Inversión Digital">
+    <meta property="og:description" content="SwiftClick - Google Partner Argentina. Partner integral de inversión digital. Certificación oficial Google, infraestructura robusta y performance real.">
+    <meta property="og:image" content="https://swiftclick.com.ar/images/og-image.png">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="SwiftClick">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://swiftclick.com.ar/">
+    <meta name="twitter:title" content="SwiftClick | Google Partner Argentina - Inversión Digital">
+    <meta name="twitter:description" content="Google Partner Argentina. Partner integral de inversión digital con certificación oficial, infraestructura robusta y performance real.">
+    <meta name="twitter:image" content="https://swiftclick.com.ar/images/og-image.png">
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "SwiftClick",
+        "url": "https://swiftclick.com.ar",
+        "logo": "https://swiftclick.com.ar/images/swift_click.svg",
+        "description": "Google Partner Argentina. Partner integral de inversión digital con certificación oficial, infraestructura robusta y performance real.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Av. Libertador 6299, OF 201",
+            "addressLocality": "CABA",
+            "addressCountry": "AR"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "info@swiftclick.com.ar",
+            "telephone": "+54-11-1234-5678",
+            "contactType": "sales"
+        },
+        "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SwiftClick",
+        "url": "https://swiftclick.com.ar",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://swiftclick.com.ar/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +87,11 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC37MP35"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -450,6 +522,43 @@
         </div>
     </footer>
 
+    <!-- GTM: DataLayer events para CTAs y navegación -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track clicks en CTAs principales
+            document.querySelectorAll('.btn-primary, .btn-secondary, .btn-submit').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'cta_click',
+                        'cta_text': this.textContent.trim(),
+                        'cta_url': this.href || '',
+                        'cta_location': this.closest('section') ? this.closest('section').id : 'unknown'
+                    });
+                });
+            });
+
+            // Track scroll a secciones
+            var trackedSections = {};
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !trackedSections[entry.target.id]) {
+                        trackedSections[entry.target.id] = true;
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'section_view',
+                            'section_id': entry.target.id
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('section[id]').forEach(function(section) {
+                observer.observe(section);
+            });
+        });
+    </script>
+
     <!-- JavaScript -->
     <script src="js/hero-animation.js"></script>
     <script src="js/filosofia-animation.js"></script>
@@ -496,6 +605,14 @@
                 const data = await response.json();
                 
                 if (response.ok) {
+                    // GTM: Evento de conversión - formulario enviado
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'form_submission',
+                        'form_name': 'contacto',
+                        'form_empresa': formData.empresa
+                    });
+                    
                     // Éxito - Mostrar mensaje de éxito
                     formMessage.style.display = 'block';
                     formMessage.style.padding = '1rem';
@@ -519,6 +636,14 @@
                 }
                 
             } catch (error) {
+                // GTM: Evento de error en formulario
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'form_error',
+                    'form_name': 'contacto',
+                    'error_message': error.message
+                });
+                
                 // Error de red o del servidor
                 formMessage.style.display = 'block';
                 formMessage.style.padding = '1rem';

@@ -1,0 +1,6 @@
+# robots.txt - SwiftClick
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://swiftclick.com.ar/sitemap.xml
